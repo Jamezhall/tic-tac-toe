@@ -1,16 +1,50 @@
-# React + Vite
+# Terminal Tic Tac Toe
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A retro terminal-style Tic Tac Toe game built with React and Vite.
 
-Currently, two official plugins are available:
+I made this for my kids for fun, and kept adding playful features like emoji game modes, a little ASCII puppy, and a boot-up sequence.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## React Compiler
+- Classic Tic Tac Toe gameplay
+- Click-to-edit player names
+- LocalStorage persistence for names, wins, draws, last winner, theme, and piece mode
+- Multiple color themes: red, orange, yellow, green, blue, purple, pink, white
+- Multiple piece modes: classic, cat/dog, robot/dinosaur, cupcake/unicorn, ghost/alien
+- Startup preload sequence with `[000]` to `[100]` counter
+- Separate audio toggles for `BGM` and `FX`
+- QR code link tab for opening the game on a phone
+- Live telemetry panel (mouse coordinates and date/time)
+- Custom plus-sign cursor on desktop
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+- React
+- Vite
+- CSS
+- qrcode.react
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Run Locally
+
+```bash
+npm install
+npm run dev
+```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+## Phone + Desktop Play
+
+Run with host enabled:
+
+```bash
+npm run dev -- --host
+```
+
+Then use your LAN URL in the `Link` tab to generate a QR code for a second device.
+
+⚠️ Multiplayer is coming soon.
