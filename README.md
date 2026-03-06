@@ -4,6 +4,12 @@
 
 <h1 align="center">Terminal Tic Tac Toe</h1>
 
+<p align="center">
+  <a href="https://ttt2026.netlify.app">https://ttt2026.netlify.app</a>
+</p>
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/ecbe811e-30a0-464b-881a-e5f53edb4e1d/deploy-status)](https://app.netlify.com/projects/ttt2026/deploys)
+
 A retro terminal-style Tic Tac Toe game built with React and Vite.
 
 I made this for my kids for fun, and kept adding playful features like emoji game modes, a little ASCII puppy, and a boot-up sequence.
@@ -28,12 +34,16 @@ I made this for my kids for fun, and kept adding playful features like emoji gam
 
 ## Todo
 
-- Persistant stat store for telementry (upstash, Cloudflare KV or Do something cool with Raspberry Pi?)
-  - games_played
-  - wins_X
-  - wins_O
-  - draws
-- Multiplayer between desktop and phone. (WebRTC DataChannel?)
+- [ ] Persistent stat store for telemetry (Upstash, Cloudflare KV, or something cool with a Raspberry Pi?)
+
+```
+games_played
+wins_X
+wins_O
+draws
+```
+
+- [ ] Multiplayer between desktop and phone (WebRTC DataChannel?)
 
 ## Tech Stack
 
