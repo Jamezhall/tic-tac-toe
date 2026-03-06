@@ -1,8 +1,17 @@
-# Terminal Tic Tac Toe
+<p align="center">
+  <img src="./public/favicon-terminal.svg" alt="Terminal Tic Tac Toe logo" width="88" />
+</p>
+
+<h1 align="center">Terminal Tic Tac Toe</h1>
 
 A retro terminal-style Tic Tac Toe game built with React and Vite.
 
 I made this for my kids for fun, and kept adding playful features like emoji game modes, a little ASCII puppy, and a boot-up sequence.
+
+## Screenshots
+
+![Gameplay](https://github.com/user-attachments/assets/b8e140b7-bb8d-4bea-9704-68270d37d2e3)
+![Settings](https://github.com/user-attachments/assets/ae8759a1-e20f-49b8-bbbf-6595a125413e)
 
 ## Features
 
@@ -16,6 +25,15 @@ I made this for my kids for fun, and kept adding playful features like emoji gam
 - QR code link tab for opening the game on a phone
 - Live telemetry panel (mouse coordinates and date/time)
 - Custom plus-sign cursor on desktop
+
+## Todo
+
+- Persistant stat store for telementry (upstash, Cloudflare KV or Do something cool with Raspberry Pi?)
+  - games_played
+  - wins_X
+  - wins_O
+  - draws
+- Multiplayer between desktop and phone. (WebRTC DataChannel?)
 
 ## Tech Stack
 

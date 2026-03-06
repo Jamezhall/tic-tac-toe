@@ -93,7 +93,7 @@ function App() {
     () => localStorage.getItem(STORAGE_KEYS.shareUrl) || window.location.href,
   )
   const [activeTab, setActiveTab] = useState('registry')
-  const [theme, setTheme] = useState(() => localStorage.getItem(STORAGE_KEYS.theme) || 'pink')
+  const [theme, setTheme] = useState(() => localStorage.getItem(STORAGE_KEYS.theme) || 'red')
   const [pieceMode, setPieceMode] = useState(
     () => localStorage.getItem(STORAGE_KEYS.pieceMode) || 'classic',
   )

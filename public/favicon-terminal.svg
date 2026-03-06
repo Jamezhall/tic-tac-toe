@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Terminal Tic Tac Toe favicon">
+  <rect x="2" y="2" width="60" height="60" fill="#090209" stroke="#7a2a2f" stroke-width="2"/>
+  <g stroke="#ff4d57" stroke-width="2" fill="none" shape-rendering="crispEdges">
+    <path d="M22 10V54M42 10V54M10 22H54M10 42H54"/>
+  </g>
+  <rect x="10" y="10" width="12" height="12" fill="#ff4d57"/>
+  <rect x="42" y="42" width="12" height="12" fill="#ff4d57" opacity="0.3"/>
+</svg>
