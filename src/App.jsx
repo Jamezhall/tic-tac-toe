@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { QRCodeSVG } from 'qrcode.react'
 import './App.css'
 
+const TELEMETRY_GAME_ID = 'tic-tac-toe'
+
 const STORAGE_KEYS = {
   player1Name: 'ttt_player1_name',
   player2Name: 'ttt_player2_name',
@@ -52,9 +54,61 @@ const DEFAULT_NAMES = {
   O: 'Player 2',
 }
 
+const DEFAULT_TELEMETRY_STATS = {
+  games_played: 0,
+  wins_X: 0,
+  wins_O: 0,
+  draws: 0,
+  last_result: null,
+  last_played_at: null,
+}
+
 function readNumber(key) {
   const value = Number.parseInt(localStorage.getItem(key) ?? '0', 10)
   return Number.isNaN(value) ? 0 : value
+}
+
+function normalizeTelemetryStats(stats = {}) {
+  return {
+    games_played: Number.parseInt(stats.games_played ?? '0', 10) || 0,
+    wins_X: Number.parseInt(stats.wins_X ?? '0', 10) || 0,
+    wins_O: Number.parseInt(stats.wins_O ?? '0', 10) || 0,
+    draws: Number.parseInt(stats.draws ?? '0', 10) || 0,
+    last_result: stats.last_result ?? null,
+    last_played_at: stats.last_played_at ?? null,
+  }
+}
+
+function formatTelemetryCount(value) {
+  return String(value).padStart(4, '0')
+}
+
+async function readTelemetryStats(game) {
+  const response = await fetch(`/.netlify/functions/telemetry?game=${encodeURIComponent(game)}`)
+
+  if (!response.ok) {
+    throw new Error('Unable to load telemetry stats')
+  }
+
+  const data = await response.json()
+  return normalizeTelemetryStats(data.stats)
+}
+
+async function writeTelemetryResult(game, result) {
+  const response = await fetch('/.netlify/functions/telemetry', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ game, result }),
+  })
+
+  if (!response.ok) {
+    throw new Error('Unable to update telemetry stats')
+  }
+
+  const data = await response.json()
+  return normalizeTelemetryStats(data.stats)
 }
 
 function getWinner(board) {
@@ -111,6 +165,8 @@ function App() {
   })
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [now, setNow] = useState(() => new Date())
+  const [telemetryStats, setTelemetryStats] = useState(DEFAULT_TELEMETRY_STATS)
+  const [telemetryStatus, setTelemetryStatus] = useState('loading')
   const puppyJumpTimeoutRef = useRef(null)
   const cursorRef = useRef(null)
   const bootIntervalRef = useRef(null)
@@ -160,6 +216,35 @@ function App() {
     localStorage.setItem(STORAGE_KEYS.fxMuted, String(isFxMuted))
   }, [isFxMuted])
 
+  useEffect(() => {
+    let isMounted = true
+
+    async function loadTelemetry() {
+      try {
+        const nextStats = await readTelemetryStats(TELEMETRY_GAME_ID)
+
+        if (!isMounted) {
+          return
+        }
+
+        setTelemetryStats(nextStats)
+        setTelemetryStatus('online')
+      } catch {
+        if (!isMounted) {
+          return
+        }
+
+        setTelemetryStatus('offline')
+      }
+    }
+
+    loadTelemetry()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
   const turnName = playerNames[turn]
   const activePieceMap = PIECE_MODES.find((mode) => mode.id === pieceMode)?.pieces ||
     PIECE_MODES[0].pieces
@@ -185,6 +270,7 @@ function App() {
       setResult({ status: 'won', winner: winner.symbol, combo: winner.combo })
       setScores((prev) => ({ ...prev, [winner.symbol]: prev[winner.symbol] + 1 }))
       setLastWinner(winner.symbol)
+      syncTelemetry(winner.symbol)
       return
     }
 
@@ -192,6 +278,7 @@ function App() {
       setResult({ status: 'draw', winner: null, combo: [] })
       setScores((prev) => ({ ...prev, draws: prev.draws + 1 }))
       setLastWinner('Draw')
+      syncTelemetry('Draw')
       return
     }
 
@@ -232,6 +319,17 @@ function App() {
 
   function setCurrentUrlAsShareUrl() {
     setShareUrl(window.location.href)
+  }
+
+  function syncTelemetry(resultValue) {
+    writeTelemetryResult(TELEMETRY_GAME_ID, resultValue)
+      .then((nextStats) => {
+        setTelemetryStats(nextStats)
+        setTelemetryStatus('online')
+      })
+      .catch(() => {
+        setTelemetryStatus('offline')
+      })
   }
 
   function handlePuppyJump() {
@@ -430,6 +528,9 @@ function App() {
     2,
     '0',
   )}:${String(now.getSeconds()).padStart(2, '0')}.${String(now.getMilliseconds()).padStart(3, '0')}`
+  const lastTelemetryResult = telemetryStats.last_result ? toTerminalText(telemetryStats.last_result) : 'NONE'
+  const telemetrySyncLabel =
+    telemetryStatus === 'loading' ? 'SYNC: BOOTING' : telemetryStatus === 'offline' ? 'SYNC: OFFLINE' : 'SYNC: ONLINE'
 
   return (
     <>
@@ -452,9 +553,16 @@ function App() {
         </button>
       </div>
 
-      <div className="telemetry" aria-hidden="true">
+      <div className="telemetry">
         <p>[X: {String(mousePos.x).padStart(4, '0')}] [Y: {String(mousePos.y).padStart(4, '0')}]</p>
         <p>[{dateText}] [{timeText}]</p>
+        <p className="telemetry-divider">[------------------]</p>
+        <p>[GAMES: {formatTelemetryCount(telemetryStats.games_played)}]</p>
+        <p>[X_WINS: {formatTelemetryCount(telemetryStats.wins_X)}]</p>
+        <p>[O_WINS: {formatTelemetryCount(telemetryStats.wins_O)}]</p>
+        <p>[DRAWS: {formatTelemetryCount(telemetryStats.draws)}]</p>
+        <p>[LAST: {lastTelemetryResult}]</p>
+        <p className={`telemetry-sync ${telemetryStatus}`}>[{telemetrySyncLabel}]</p>
       </div>
 
       <audio ref={startClickRef} src="/audio/boot-start-click.mp3" preload="auto" muted={isFxMuted} />

@@ -102,6 +102,7 @@
 	padding: 0.28rem 0.4rem;
 	display: grid;
 	gap: 0.06rem;
+	min-width: 9.2rem;
 }
 
 .telemetry p {
@@ -109,6 +110,14 @@
 	color: var(--accent-bright);
 	font-size: 0.66rem;
 	line-height: 1.1;
+}
+
+.telemetry-divider {
+	color: var(--muted) !important;
+}
+
+.telemetry-sync.offline {
+	color: #ff9b3d;
 }
 
 .terminal-plus-cursor {
