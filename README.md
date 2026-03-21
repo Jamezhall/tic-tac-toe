@@ -31,6 +31,7 @@ I made this for my kids for fun, and kept adding playful features like emoji gam
 - QR code link tab for opening the game on a phone
 - Live telemetry panel (mouse coordinates and date/time)
 - Persistent global telemetry stats powered by Upstash Redis + Netlify Functions
+- Random first player on each round
 - Custom plus-sign cursor on desktop
 
 ## Todo

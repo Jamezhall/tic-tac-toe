@@ -127,7 +127,7 @@ function toTerminalText(value) {
 
 function App() {
   const [board, setBoard] = useState(Array(9).fill(null))
-  const [turn, setTurn] = useState('X')
+  const [turn, setTurn] = useState(() => (Math.random() < 0.5 ? 'X' : 'O'))
   const [result, setResult] = useState({ status: 'playing', winner: null, combo: [] })
   const [playerNames, setPlayerNames] = useState(() => ({
     X: localStorage.getItem(STORAGE_KEYS.player1Name) || DEFAULT_NAMES.X,
@@ -308,7 +308,7 @@ function App() {
 
   function resetRound() {
     setBoard(Array(9).fill(null))
-    setTurn('X')
+    setTurn(Math.random() < 0.5 ? 'X' : 'O')
     setResult({ status: 'playing', winner: null, combo: [] })
   }
 
