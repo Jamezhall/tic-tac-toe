@@ -648,6 +648,16 @@ h2 {
 	.actions {
 		flex-direction: column;
 	}
+
+	.telemetry {
+		position: static;
+		width: min(980px, 100%);
+		margin: 0.55rem auto 0;
+	}
+
+	.telemetry-cursor {
+		display: none;
+	}
 }
 
 @media (hover: none) {

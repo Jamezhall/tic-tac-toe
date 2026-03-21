@@ -107,6 +107,10 @@ body::before {
   :root {
     font-size: 20px;
   }
+
+  #root {
+    flex-direction: column;
+  }
 }
 
 #root {

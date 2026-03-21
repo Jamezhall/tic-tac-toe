@@ -553,18 +553,6 @@ function App() {
         </button>
       </div>
 
-      <div className="telemetry">
-        <p>[X: {String(mousePos.x).padStart(4, '0')}] [Y: {String(mousePos.y).padStart(4, '0')}]</p>
-        <p>[{dateText}] [{timeText}]</p>
-        <p className="telemetry-divider">[------------------]</p>
-        <p>[GAMES: {formatTelemetryCount(telemetryStats.games_played)}]</p>
-        <p>[X_WINS: {formatTelemetryCount(telemetryStats.wins_X)}]</p>
-        <p>[O_WINS: {formatTelemetryCount(telemetryStats.wins_O)}]</p>
-        <p>[DRAWS: {formatTelemetryCount(telemetryStats.draws)}]</p>
-        <p>[LAST: {lastTelemetryResult}]</p>
-        <p className={`telemetry-sync ${telemetryStatus}`}>[{telemetrySyncLabel}]</p>
-      </div>
-
       <audio ref={startClickRef} src="/audio/boot-start-click.mp3" preload="auto" muted={isFxMuted} />
       <audio
         ref={preloadLoopRef}
@@ -808,6 +796,17 @@ function App() {
         )}
         </section>
       </main>
+      <div className="telemetry">
+        <p className="telemetry-cursor">[X: {String(mousePos.x).padStart(4, '0')}] [Y: {String(mousePos.y).padStart(4, '0')}]</p>
+        <p>[{dateText}] [{timeText}]</p>
+        <p className="telemetry-divider">[------------------]</p>
+        <p>[GAMES: {formatTelemetryCount(telemetryStats.games_played)}]</p>
+        <p>[X_WINS: {formatTelemetryCount(telemetryStats.wins_X)}]</p>
+        <p>[O_WINS: {formatTelemetryCount(telemetryStats.wins_O)}]</p>
+        <p>[DRAWS: {formatTelemetryCount(telemetryStats.draws)}]</p>
+        <p>[LAST: {lastTelemetryResult}]</p>
+        <p className={`telemetry-sync ${telemetryStatus}`}>[{telemetrySyncLabel}]</p>
+      </div>
     </>
   )
 }
